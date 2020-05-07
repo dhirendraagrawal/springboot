@@ -1,13 +1,17 @@
 package com.example.demo.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "Employee")
 public class Employee {
 	 
-    private String empNo;
+    @Id
+	private String empNo;
     private String empName;
     private String position;
  
-	public Employee() {
-	}
+	public Employee() { }
  
     public Employee(String empNo, String empName, String position) {
         this.empNo = empNo;

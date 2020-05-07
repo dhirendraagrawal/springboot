@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.example.demo.dao.EmployeeDAO;
 import com.example.demo.model.Employee;
+import com.example.demo.service.EmployeeService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,11 +20,36 @@ public class MainRestController {
 	@Autowired
 	private EmployeeDAO employeeDAO;
 
+	@Autowired
+	private EmployeeService employeeservice;
+	
 	@RequestMapping("/")
 	public String welcome() {
 		return "Welcome to RestTemplate Demo.";
 	}
 
+	@RequestMapping(value = "listEmployees", method = RequestMethod.GET)
+	public List<Employee> ListEmployees(){
+		return employeeservice.findAll();
+	}
+	
+	@RequestMapping(value = "employee1/{empNo}", method = RequestMethod.GET)
+	public List<Employee> getEmployee1(@PathVariable("empNo") String empNo){
+		return employeeservice.findByEmpNo(empNo);
+	}
+	
+	@RequestMapping(value = "deleteemployee1/{empNo}", method = RequestMethod.POST)
+	public String delEmployee(@PathVariable("empNo") String empNo){
+		employeeservice.deletebyEmpNo(empNo);
+		return "Employee Deleted " + empNo;
+	}
+	
+	@RequestMapping(value = "updemployee1", method = RequestMethod.PUT)
+	public Employee updateEmployee1(@RequestBody Employee emp) {
+		 System.out.println("(Service Side) Editing employee: " + emp.getEmpNo());
+		return employeeservice.updEmployee(emp);
+	}
+	
 	// URL - http://localhost:8080/employees
 	@RequestMapping(value = "/employees", //
 			method = RequestMethod.GET, //
